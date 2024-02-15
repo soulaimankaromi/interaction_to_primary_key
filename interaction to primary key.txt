@@ -1,0 +1,201 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 16
+Server version: 8.0.36 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| isgi               |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use ISGI;
+Database changed
+mysql> create table stagiaire(
+    -> id_stagiaire int  primary key,
+    -> name_stagiaire varchar(15),
+    -> ville_stagiaire varchar(15)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_isgi |
++----------------+
+| stagiaire      |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> desc table stagiaire;
++----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+-------+
+| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
++----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+-------+
+|  1 | SIMPLE      | stagiaire | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    1 |   100.00 | NULL  |
++----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> desc stagiaire;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| id_stagiaire    | int         | NO   | PRI | NULL    |       |
+| name_stagiaire  | varchar(15) | YES  |     | NULL    |       |
+| ville_stagiaire | varchar(15) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from stagiaire;
+Empty set (0.00 sec)
+
+mysql> insert into stagiaire
+    -> values(1,'saad','marrakech')
+    -> ,(2,'walid','sale');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc stagiaire;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| id_stagiaire    | int         | NO   | PRI | NULL    |       |
+| name_stagiaire  | varchar(15) | YES  |     | NULL    |       |
+| ville_stagiaire | varchar(15) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from stagiaire;
++--------------+----------------+-----------------+
+| id_stagiaire | name_stagiaire | ville_stagiaire |
++--------------+----------------+-----------------+
+|            1 | saad           | marrakech       |
+|            2 | walid          | sale            |
++--------------+----------------+-----------------+
+2 rows in set (0.00 sec)
+
+mysql> create table stagiaire_copy like stagiaire;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_isgi |
++----------------+
+| stagiaire      |
+| stagiaire_copy |
++----------------+
+2 rows in set (0.00 sec)
+
+mysql> desc stagiaire_copy;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| id_stagiaire    | int         | NO   | PRI | NULL    |       |
+| name_stagiaire  | varchar(15) | YES  |     | NULL    |       |
+| ville_stagiaire | varchar(15) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from stagiaire_copy;
+Empty set (0.00 sec)
+
+mysql> insert into stagiaire_copy select * from stagiaire;
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc stagiaire_copy;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| id_stagiaire    | int         | NO   | PRI | NULL    |       |
+| name_stagiaire  | varchar(15) | YES  |     | NULL    |       |
+| ville_stagiaire | varchar(15) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from stagiaire_copy;
++--------------+----------------+-----------------+
+| id_stagiaire | name_stagiaire | ville_stagiaire |
++--------------+----------------+-----------------+
+|            1 | saad           | marrakech       |
+|            2 | walid          | sale            |
++--------------+----------------+-----------------+
+2 rows in set (0.00 sec)
+
+mysql> create table groupe(
+    -> code_gr int primary key,
+    -> name_gr varchar(10),
+    -> filiere varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into groupe
+    -> values(1,'dev104','info'),
+    -> (2,'gestion103','gestion'),
+    -> (3,'dev102','info');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> alter table stagiaire
+    -> add code_gr int;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stagiaire;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| id_stagiaire    | int         | NO   | PRI | NULL    |       |
+| name_stagiaire  | varchar(15) | YES  |     | NULL    |       |
+| ville_stagiaire | varchar(15) | YES  |     | NULL    |       |
+| code_gr         | int         | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from stagiaire;
++--------------+----------------+-----------------+---------+
+| id_stagiaire | name_stagiaire | ville_stagiaire | code_gr |
++--------------+----------------+-----------------+---------+
+|            1 | saad           | marrakech       |    NULL |
+|            2 | walid          | sale            |    NULL |
++--------------+----------------+-----------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> update stagiaire
+    -> set code_gr = 1 where id_stagiaire = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update stagiaire
+    -> set code_gr = 3 where id_stagiaire = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from stagiaire;
++--------------+----------------+-----------------+---------+
+| id_stagiaire | name_stagiaire | ville_stagiaire | code_gr |
++--------------+----------------+-----------------+---------+
+|            1 | saad           | marrakech       |       1 |
+|            2 | walid          | sale            |       3 |
++--------------+----------------+-----------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select id_stagiaire, name_stagiaire, ville_stagiaire, name_gr, filiere from stagiaire join groupe where stagiaire.id_stagiaire = groupe.code_gr;
++--------------+----------------+-----------------+------------+---------+
+| id_stagiaire | name_stagiaire | ville_stagiaire | name_gr    | filiere |
++--------------+----------------+-----------------+------------+---------+
+|            1 | saad           | marrakech       | dev104     | info    |
+|            2 | walid          | sale            | gestion103 | gestion |
++--------------+----------------+-----------------+------------+---------+
+2 rows in set (0.00 sec)
